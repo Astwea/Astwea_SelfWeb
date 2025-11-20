@@ -49,6 +49,30 @@
   flex-direction: column;
   align-items: center;
   min-height: 400px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  opacity: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: visible;
+}
+
+.skill-category-card.card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-category-card.card-hovered {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-blue);
+  background-color: #ffffff;
+}
+
+.skill-category-card.card-dimmed {
+  opacity: 0.6;
+  transform: scale(0.98);
 }
 
 .category-icon {
@@ -58,6 +82,30 @@
   border-radius: 8px;
   overflow: hidden;
   background-color: white;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.category-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.category-icon.icon-hovered {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+.category-icon.icon-hovered::before {
+  opacity: 1;
 }
 
 .category-icon img {
@@ -65,14 +113,67 @@
   height: 100%;
   object-fit: contain;
   padding: 0.5rem;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.category-icon.icon-hovered img {
+  transform: scale(1.1);
 }
 
 .category-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--primary-dark);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.8rem 0;
   text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.category-title.title-hovered {
+  color: var(--primary-blue);
+  transform: scale(1.05);
+}
+
+.category-title.title-hovered::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark));
+  border-radius: 2px;
+  animation: underlineExpand 0.3s ease;
+}
+
+.category-description {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.category-description.description-visible {
+  max-height: 100px;
+  opacity: 1;
+}
+
+@keyframes underlineExpand {
+  from {
+    width: 0;
+  }
+  to {
+    width: 40px;
+  }
 }
 
 .skills-list {
@@ -84,6 +185,42 @@
 
 .skill-item {
   width: 100%;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(-10px);
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.skill-category-card.card-visible .skill-item {
+  opacity: 1;
+  transform: translateX(0);
+  animation: slideInFromLeft 0.5s ease forwards;
+}
+
+.skill-item.skill-item-hovered {
+  transform: translateX(5px);
+  padding-left: 4px;
+}
+
+.skill-item.skill-expanded {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .skill-header {
@@ -93,16 +230,47 @@
   margin-bottom: 0.5rem;
 }
 
+.skill-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.skill-experience {
+  font-size: 0.75rem;
+  color: var(--primary-blue);
+  background-color: rgba(59, 130, 246, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .skill-name {
   font-size: 1rem; /* 从0.9rem增大到1rem */
   color: var(--text-dark);
   font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.skill-name.name-hovered {
+  color: var(--primary-blue);
+  font-weight: 600;
+  transform: scale(1.05);
 }
 
 .skill-percentage {
   font-size: 0.95rem; /* 从0.85rem增大到0.95rem */
   color: var(--text-gray);
   font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.skill-percentage.percentage-hovered {
+  color: var(--primary-dark);
+  font-size: 1rem;
+  transform: scale(1.1);
 }
 
 .skill-progress-wrapper {
@@ -117,8 +285,54 @@
   height: 100%;
   background-color: var(--primary-blue);
   border-radius: 4px;
-  transition: all 0.3s ease;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.skill-progress.progress-animated {
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+.skill-progress.progress-hovered {
+  background-color: var(--primary-dark);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+  height: 10px;
+  margin-top: -1px;
+}
+
+.skill-progress.progress-hovered::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes progressGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  }
 }
 
 .skill-item:hover .skill-progress {
@@ -129,6 +343,78 @@
   display: block;
   width: 100%;
   height: 100%;
+  background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-progress.progress-hovered .skill-progress-fill {
+  opacity: 1;
+}
+
+/* 技能详细信息 */
+.skill-details {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skill-description {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+  margin: 0 0 0.8rem 0;
+}
+
+.skill-projects {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+}
+
+.skill-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-right: 0.3rem;
+}
+
+.skill-projects-list {
+  color: var(--text-dark);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.skill-tag {
+  font-size: 0.75rem;
+  color: var(--primary-blue);
+  background-color: rgba(59, 130, 246, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  transform: translateY(-1px);
 }
 
 /* 响应式设计 */
@@ -140,10 +426,37 @@
   .skill-category-card {
     min-height: auto;
   }
+
+  .skill-item.skill-expanded {
+    position: relative;
+    z-index: 1;
+  }
+
+  .skill-details {
+    font-size: 0.8rem;
+  }
+
+  .skill-tags {
+    gap: 0.3rem;
+  }
+
+  .skill-tag {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .category-description.description-visible {
+    max-height: 150px;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1199px) {
   .skills-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skill-item.skill-expanded {
+    position: relative;
+    z-index: 10;
   }
 }

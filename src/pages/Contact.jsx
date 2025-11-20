@@ -97,23 +97,11 @@ const Contact = () => {
                 </a>
               </div>
               <div className="contact-item">
-                <span className="contact-icon">🔗</span>
-                <a
-                  href="https://www.linkedin.com/in/linsen733"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-link"
-                >
-                  <img
-                    src={getAssetPath('/images/linkedin-icon.png')}
-                    alt="LinkedIn"
-                    className="social-icon"
-                    onError={(e) => {
-                      e.target.style.display = 'none'
-                    }}
-                  />
-                  LinkedIn 账号
-                </a>
+                <span className="contact-icon">💬</span>
+                <div className="contact-text">
+                  <span className="contact-label">微信账号</span>
+                  <span className="contact-note">微信号：linsn_as</span>
+                </div>
               </div>
             </div>
           </div>

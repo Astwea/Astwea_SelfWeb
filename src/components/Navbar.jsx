@@ -37,7 +37,6 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <div className="logo-icon">🤖</div>
           <span>林森 - 机器人开发</span>
         </Link>
 

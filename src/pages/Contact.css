@@ -65,12 +65,12 @@
 }
 
 .section-title {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary-dark);
   margin: 0 0 1rem 0;
   width: 100%;
-  text-align: left;
+  text-align: center;
   padding: 0;
 }
 
@@ -184,6 +184,11 @@
 .contact-note {
   font-size: 0.85rem;
   color: var(--text-gray);
+}
+
+.contact-label {
+  font-weight: 500;
+  color: var(--text-dark);
 }
 
 /* 留言区 */

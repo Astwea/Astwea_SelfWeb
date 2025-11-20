@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
 import { getAssetPath } from '../utils/pathHelper'
 import './Projects.css'
@@ -6,6 +6,11 @@ import './Projects.css'
 const Projects = () => {
   const [selectedImage, setSelectedImage] = useState(null)
   const [playingVideo, setPlayingVideo] = useState(null)
+  const scrollRefs = useRef({})
+  const autoScrollIntervals = useRef({})
+  const userInteracting = useRef({})
+  const scrollTimeouts = useRef({})
+  const lastScrollLeft = useRef({})
 
   const projects = [
     {
@@ -38,9 +43,33 @@ const Projects = () => {
           clickable: false,
         },
         {
-          src: getAssetPath('/images/project1-pcb.png'), // 实际文件名是.png
-          alt: 'PCB 设计',
-          label: 'PCB 设计',
+          src: getAssetPath('/images/project1-real1.jpg'), // 实际文件名是.png
+          alt: '改装后扫地机器人',
+          label: '改装后：雷达导航',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/project1-real2.png'), // 实际文件名是.png
+          alt: '改装后扫地机器人',
+          label: '改装后：雷达导航',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/project1-sim1.jpg'), // 实际文件名是.png
+          alt: 'IsaacLab训练',
+          label: 'IsaacLab训练',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/project1-sim2.png'), // 实际文件名是.png
+          alt: 'IsaacSim仿真',
+          label: 'IsaacSim 仿真',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/project1-sim3.jpg'), // 实际文件名是.png
+          alt: 'IsaacSim仿真',
+          label: 'IsaacSim 仿真',
           clickable: true,
         },
       ],
@@ -84,6 +113,18 @@ const Projects = () => {
         {
           src: getAssetPath('/images/project2-team.jpg'),
           alt: '竞赛现场合影',
+          label: '全国智能车竞赛',
+          clickable: false,
+        },
+        {
+          src: getAssetPath('/images/project2-competition.jpg'),
+          alt: '竞赛现场记录',
+          label: '全国智能车竞赛',
+          clickable: false,
+        },
+        {
+          src: getAssetPath('/images/project2-photo.png'),
+          alt: '竞赛现场大合影',
           label: '全国智能车竞赛',
           clickable: false,
         },
@@ -138,6 +179,11 @@ const Projects = () => {
           clickable: false,
         },
       ],
+      video: {
+        src: getAssetPath('/videos/project3-test.mp4'),
+        thumbnail: getAssetPath('/images/project3-test.png'),
+        alt: '无人机飞行测试',
+      },
       result:
         '项目成果：成功完成硬件搭建与基础通信调试，姿态控制系统初步实现，能够稳定控制无人机 Roll/Pitch 姿态。通过该项目深入掌握了嵌入式实时系统设计、中断管理、任务调度、传感器融合等核心技术，为后续机器人开发积累了丰富的实践经验。',
     },
@@ -163,6 +209,114 @@ const Projects = () => {
   const handleVideoPlay = (projectId) => {
     setPlayingVideo(playingVideo === projectId ? null : projectId)
   }
+
+  // 启动自动滚动
+  const startAutoScroll = (projectId) => {
+    const scrollContainer = scrollRefs.current[projectId]
+    if (!scrollContainer) return
+
+    // 检查是否需要滚动（内容宽度大于容器宽度）
+    if (scrollContainer.scrollWidth <= scrollContainer.clientWidth) {
+      return // 内容不需要滚动，不启动自动滚动
+    }
+
+    // 清除之前的定时器
+    if (autoScrollIntervals.current[projectId]) {
+      clearInterval(autoScrollIntervals.current[projectId])
+    }
+
+    autoScrollIntervals.current[projectId] = setInterval(() => {
+      if (userInteracting.current[projectId]) {
+        return // 用户正在交互，暂停自动滚动
+      }
+
+      const container = scrollRefs.current[projectId]
+      if (!container) return
+
+      const scrollWidth = container.scrollWidth
+      const clientWidth = container.clientWidth
+      const scrollLeft = container.scrollLeft
+
+      // 如果已经滚动到末尾，重置到开头
+      if (scrollLeft + clientWidth >= scrollWidth - 5) {
+        container.scrollTo({ left: 0, behavior: 'smooth' })
+      } else {
+        // 每次滚动 1px，实现平滑效果
+        container.scrollBy({ left: 1, behavior: 'auto' })
+      }
+    }, 50) // 每50ms滚动一次，实现平滑的慢速滚动效果
+  }
+
+  // 停止自动滚动
+  const stopAutoScroll = (projectId) => {
+    if (autoScrollIntervals.current[projectId]) {
+      clearInterval(autoScrollIntervals.current[projectId])
+      autoScrollIntervals.current[projectId] = null
+    }
+  }
+
+  // 处理用户交互开始
+  const handleUserInteractionStart = (projectId) => {
+    userInteracting.current[projectId] = true
+    stopAutoScroll(projectId)
+  }
+
+  // 处理用户交互结束
+  const handleUserInteractionEnd = (projectId) => {
+    userInteracting.current[projectId] = false
+    // 清除之前的定时器
+    if (scrollTimeouts.current[projectId]) {
+      clearTimeout(scrollTimeouts.current[projectId])
+    }
+    // 延迟3秒后恢复自动滚动
+    scrollTimeouts.current[projectId] = setTimeout(() => {
+      if (!userInteracting.current[projectId]) {
+        startAutoScroll(projectId)
+      }
+    }, 3000)
+  }
+
+  // 处理滚动事件（检测用户手动滚动）
+  const handleScroll = (projectId) => {
+    const container = scrollRefs.current[projectId]
+    if (!container) return
+
+    const currentScrollLeft = container.scrollLeft
+    const lastScroll = lastScrollLeft.current[projectId]
+
+    // 如果滚动位置变化较大，说明是用户手动滚动
+    if (lastScroll !== undefined && Math.abs(currentScrollLeft - lastScroll) > 5) {
+      handleUserInteractionStart(projectId)
+      handleUserInteractionEnd(projectId)
+    }
+
+    lastScrollLeft.current[projectId] = currentScrollLeft
+  }
+
+  // 组件挂载时启动自动滚动
+  useEffect(() => {
+    projects.forEach((project) => {
+      if (project.images && project.images.length > 0) {
+        // 延迟启动，确保DOM已渲染
+        setTimeout(() => {
+          startAutoScroll(project.id)
+        }, 500)
+      }
+    })
+
+    // 清理函数
+    return () => {
+      Object.keys(autoScrollIntervals.current).forEach((projectId) => {
+        stopAutoScroll(projectId)
+      })
+      Object.keys(scrollTimeouts.current).forEach((projectId) => {
+        if (scrollTimeouts.current[projectId]) {
+          clearTimeout(scrollTimeouts.current[projectId])
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="projects">
@@ -232,26 +386,39 @@ const Projects = () => {
                 </div>
 
                 <div className="project-right">
-                  {/* 图片展示 */}
-                  <div className="project-images">
-                    {project.images.map((image, index) => (
-                      <div
-                        key={index}
-                        className={`project-image-wrapper ${
-                          image.clickable ? 'clickable' : ''
-                        }`}
-                        onClick={() => image.clickable && handleImageClick(image)}
-                      >
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          onError={handleImageError}
-                          loading="lazy"
-                        />
-                        {image.label && <div className="image-label">{image.label}</div>}
+                  {/* 图片展示 - 横向滚动 */}
+                  {project.images && project.images.length > 0 && (
+                    <div
+                      className="project-images-scroll"
+                      ref={(el) => (scrollRefs.current[project.id] = el)}
+                      onMouseDown={() => handleUserInteractionStart(project.id)}
+                      onMouseUp={() => handleUserInteractionEnd(project.id)}
+                      onMouseLeave={() => handleUserInteractionEnd(project.id)}
+                      onTouchStart={() => handleUserInteractionStart(project.id)}
+                      onTouchEnd={() => handleUserInteractionEnd(project.id)}
+                      onScroll={() => handleScroll(project.id)}
+                    >
+                      <div className="project-images">
+                        {project.images.map((image, index) => (
+                          <div
+                            key={index}
+                            className={`project-image-wrapper ${
+                              image.clickable ? 'clickable' : ''
+                            }`}
+                            onClick={() => image.clickable && handleImageClick(image)}
+                          >
+                            <img
+                              src={image.src}
+                              alt={image.alt}
+                              onError={handleImageError}
+                              loading="lazy"
+                            />
+                            {image.label && <div className="image-label">{image.label}</div>}
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
 
                   {/* 视频展示 */}
                   {project.video && (
