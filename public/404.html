@@ -3,25 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 - 页面未找到</title>
-    <script>
-      // GitHub Pages SPA 路由处理
-      // 当访问不存在的路径时，重定向到 index.html
-      var path = window.location.pathname;
-      var base = '/Astwea_SelfWeb/';
-      
-      // 如果路径不是以 base 开头，添加 base
-      if (!path.startsWith(base)) {
-        path = base + path.replace(/^\//, '');
-      }
-      
-      // 重定向到 index.html，保留查询参数和哈希
-      var redirect = base + 'index.html' + window.location.search + window.location.hash;
-      window.location.replace(redirect);
-    </script>
+    <title>正在加载...</title>
   </head>
   <body>
-    <p>正在重定向...</p>
+    <p style="text-align: center; padding: 50px;">正在加载页面...</p>
+    <script>
+      // 此文件在构建时会被 dist/index.html 覆盖
+      // 构建脚本会自动处理
+    </script>
   </body>
 </html>
 
