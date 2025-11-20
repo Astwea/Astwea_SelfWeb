@@ -20,13 +20,27 @@ export const getAssetPath = (path) => {
   // 使用 Vite 的 BASE_URL，它会自动包含 base path（如 /Astwea_SelfWeb/）
   // 在开发环境中，BASE_URL 通常是 '/'
   // 在生产环境中，BASE_URL 是 vite.config.js 中配置的 base 值
-  const baseUrl = import.meta.env.BASE_URL
+  let baseUrl = import.meta.env.BASE_URL
   
-  // 移除 baseUrl 末尾的斜杠（如果有），然后拼接路径
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
-  const cleanPath = normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`
+  // 确保 baseUrl 存在且有效
+  if (!baseUrl || baseUrl === 'undefined') {
+    // 如果 BASE_URL 未定义，尝试从 vite.config.js 中读取
+    // 或者使用默认值
+    baseUrl = '/Astwea_SelfWeb/'
+  }
   
-  return `${cleanBaseUrl}${cleanPath}`
+  // 确保 baseUrl 以 / 开头和结尾
+  if (!baseUrl.startsWith('/')) {
+    baseUrl = '/' + baseUrl
+  }
+  if (!baseUrl.endsWith('/')) {
+    baseUrl = baseUrl + '/'
+  }
+  
+  // 移除路径开头的斜杠（因为 baseUrl 已经以 / 结尾）
+  const cleanPath = normalizedPath.startsWith('/') ? normalizedPath.slice(1) : normalizedPath
+  
+  return `${baseUrl}${cleanPath}`
 }
 
 /**

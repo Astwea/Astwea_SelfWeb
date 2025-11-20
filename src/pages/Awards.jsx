@@ -12,7 +12,7 @@ const Awards = () => {
       name: '腾讯开悟人工智能全球公开赛中国内地赛区第二十名',
       period: '2025',
       role: '团队核心成员',
-      image: getAssetPath('/images/award-tencent.jpg'),
+      image: getAssetPath('/images/award-tencent.png'),
       alt: '腾讯开悟公开赛',
     },
     {

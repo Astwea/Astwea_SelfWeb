@@ -86,7 +86,7 @@ const Contact = () => {
                   className="contact-link"
                 >
                   <img
-                    src={getAssetPath('/images/github-icon.png')}
+                    src={getAssetPath('/images/github-icon.jpeg')}
                     alt="GitHub"
                     className="social-icon"
                     onError={(e) => {

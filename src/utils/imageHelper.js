@@ -28,36 +28,35 @@ export const handleImageError = (e, getPlaceholder = null) => {
   
   // 从当前路径提取基础路径（不含扩展名）
   // 例如：/images/project1-before.jpg -> /images/project1-before
-  // 或者：http://localhost:3000/images/project1-before.jpg -> /images/project1-before
+  // 或者：http://localhost:3000/Astwea_SelfWeb/images/project1-before.jpg -> /Astwea_SelfWeb/images/project1-before
   let basePath = ''
   let currentExt = ''
   
-  // 尝试提取路径和扩展名
-  const match1 = currentSrc.match(/(\/[^?]+)\.(jpg|jpeg|png)(\?.*)?$/i)
+  // 首先尝试从 src 属性获取原始路径（可能包含 base path）
+  const originalSrc = img.getAttribute('src') || currentSrc
+  
+  // 尝试提取路径和扩展名（支持包含 base path 的情况）
+  // 匹配模式：/base/path/images/file.jpg 或 /images/file.jpg
+  const match1 = originalSrc.match(/(\/[^?]+)\.(jpg|jpeg|png)(\?.*)?$/i)
   if (match1) {
     basePath = match1[1]
     currentExt = match1[2].toLowerCase()
   } else {
-    // 尝试从完整URL中提取
-    const match2 = currentSrc.match(/(.+)\.(jpg|jpeg|png)(\?.*)?$/i)
+    // 尝试从完整URL中提取（包含域名的情况）
+    const match2 = currentSrc.match(/(https?:\/\/[^\/]+)?(\/.+?)\.(jpg|jpeg|png)(\?.*)?$/i)
     if (match2) {
-      // 如果包含域名，提取路径部分
-      const pathMatch = match2[1].match(/(\/images\/.+)$/i)
-      if (pathMatch) {
-        basePath = pathMatch[1]
-      } else {
-        basePath = match2[1]
-      }
-      currentExt = match2[2].toLowerCase()
+      basePath = match2[2] || match2[1]
+      currentExt = (match2[3] || match2[2]).toLowerCase()
     }
   }
   
-  // 如果无法提取基础路径，尝试从src属性获取原始路径
-  if (!basePath && img.getAttribute('src')) {
-    const originalSrc = img.getAttribute('src')
-    const origMatch = originalSrc.match(/(\/images\/[^\.]+)/)
-    if (origMatch) {
-      basePath = origMatch[1]
+  // 如果仍然无法提取，尝试从原始路径中提取（不包含扩展名）
+  if (!basePath && originalSrc) {
+    // 尝试匹配 /images/xxx 或 /Astwea_SelfWeb/images/xxx 格式
+    const pathMatch = originalSrc.match(/(\/[^\/]+\/images\/[^\.]+)/i) || 
+                      originalSrc.match(/(\/images\/[^\.]+)/i)
+    if (pathMatch) {
+      basePath = pathMatch[1]
     }
   }
   
@@ -84,7 +83,22 @@ export const handleImageError = (e, getPlaceholder = null) => {
   
   if (remainingFormats.length > 0) {
     const nextFormat = remainingFormats[0]
-    const newSrc = `${basePath}.${nextFormat}`
+    
+    // 构建新的路径，保持原有的 base path
+    // basePath 应该已经包含了完整的路径（包括 base path，如果有的话）
+    let newSrc = `${basePath}.${nextFormat}`
+    
+    // 如果 basePath 不包含 base path，但原始路径包含，需要添加 base path
+    // 检查原始路径是否包含 /Astwea_SelfWeb/
+    if (originalSrc.includes('/Astwea_SelfWeb/') && !basePath.includes('/Astwea_SelfWeb/')) {
+      // 从原始路径中提取 base path 部分
+      const baseMatch = originalSrc.match(/(\/Astwea_SelfWeb\/)/)
+      if (baseMatch) {
+        // 确保 basePath 以 / 开头（移除开头的 /，因为 baseMatch[1] 已经包含）
+        const pathWithoutSlash = basePath.startsWith('/') ? basePath.slice(1) : basePath
+        newSrc = `${baseMatch[1]}${pathWithoutSlash}.${nextFormat}`
+      }
+    }
     
     // 记录已尝试的格式和重试次数
     triedFormats.push(nextFormat)
