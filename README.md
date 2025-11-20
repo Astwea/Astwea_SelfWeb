@@ -1,6 +1,6 @@
-# 林森 - 机器人开发工程师个人网站
+# 个人网站项目
 
-一个现代化的个人网站项目，展示机器人开发工程师的专业技能、项目经验和职业履历。
+一个使用 React + Vite 构建的现代化个人网站，展示专业技能、项目经验和作品集。
 
 ## 技术栈
 
@@ -13,9 +13,9 @@
 
 ```
 ├── public/
-│   ├── images/          # 图片资源（需添加）
-│   ├── videos/          # 视频资源（需添加）
-│   └── 林森-机器人开发-简历.pdf  # PDF简历（需将根目录的PDF移至此目录）
+│   ├── images/          # 图片资源
+│   ├── videos/          # 视频资源
+│   └── *.pdf            # PDF 文件
 ├── src/
 │   ├── components/      # 通用组件
 │   │   ├── Navbar.jsx   # 导航栏
@@ -65,56 +65,13 @@ npm run build
 npm run preview
 ```
 
-## 需要的图片资源
+## 资源文件
 
-请在 `public/images/` 目录下添加以下图片（所有图片建议使用 WebP 格式以优化加载速度）：
+项目所需的图片和视频资源请放置在 `public/` 目录下：
+- `public/images/` - 图片资源
+- `public/videos/` - 视频资源
 
-### 首页
-- `profile.jpg` - 个人形象照（1080x1080，实验室背景，手持机器人模型）
-- `ros2-icon.png` - ROS2 节点通信示意图（200x200）
-- `stm32-icon.png` - STM32 微控制器图标（200x200）
-- `award-icon.png` - 荣誉奖章图标（200x200）
-
-### 关于我页面
-- `lab-scene.jpg` - 实验室工作场景（1920x1080）
-- `life-tech.jpg` - 技术兴趣照片（400x300）
-- `life-cycling.jpg` - 骑行照片（400x300）
-- `life-event.jpg` - 技术沙龙合影（400x300）
-
-### 项目经验页面
-- `project1-before.jpg` - 改装前扫地机器人（200x200）
-- `project1-pcb.jpg` - PCB 设计截图（400x300）
-- `project1-video-thumb.jpg` - 仿真视频缩略图
-- `project2-car.jpg` - 智能车实物（200x200）
-- `project2-vision.jpg` - 视觉识别界面（400x300）
-- `project2-team.jpg` - 竞赛现场合影（200x200）
-- `project3-board.jpg` - 飞控主板实物（400x300）
-- `project3-code.jpg` - PID 算法代码截图（200x200）
-- `project3-wiring.jpg` - 传感器接线示意图（200x200）
-
-### 荣誉奖项页面
-- `award-tencent.jpg` - 腾讯开悟公开赛证书（150x150）
-- `award-target.jpg` - 目标射击国家一等奖（150x150）
-- `award-quadruped.jpg` - 四足仿生国家二等奖（150x150）
-- `award-smartcar.jpg` - 智能车竞赛一等奖（150x150）
-- `award-ai-algo.jpg` - 人工智能算法精英大赛一等奖（150x150）
-
-### 技能矩阵页面
-- `skill-ros2.png` - ROS2 分类图标（300x150）
-- `image.png` - STM32 分类图标（300x150）
-- `skill-opencv.png` - OpenCV 分类图标（300x150）
-- `skill-other.png` - 其他技能分类图标（300x150）
-
-### 联系与简历页面
-- `resume-cover.jpg` - 简历封面（400x550）
-- `github-icon.png` - GitHub 官方图标（80x80）
-- `linkedin-icon.png` - LinkedIn 官方图标（80x80）
-
-## 视频资源
-
-请在 `public/videos/` 目录下添加以下视频：
-
-- `project1-sim.mp4` - Isaac Sim 仿真视频（<50MB，15秒，MP4格式）
+建议图片使用 WebP 格式以优化加载速度。
 
 ## 功能特性
 
@@ -144,7 +101,60 @@ npm run preview
 
 ## 部署到公网
 
-### 快速部署（推荐）
+### GitHub Pages 部署（推荐）
+
+本项目已配置好 GitHub Pages 自动部署，按照以下步骤操作：
+
+#### 方法一：使用 GitHub Actions（自动部署，推荐）
+
+1. **确保仓库已推送到 GitHub**
+   ```bash
+   git add .
+   git commit -m "准备部署到 GitHub Pages"
+   git push origin main
+   ```
+
+2. **启用 GitHub Pages**
+   - 进入 GitHub 仓库页面
+   - 点击 `Settings` → `Pages`
+   - 在 `Source` 部分选择 `GitHub Actions`
+   - 保存设置
+
+3. **触发部署**
+   - 推送代码到 `main` 分支会自动触发部署
+   - 或手动触发：在 `Actions` 标签页选择 `Deploy to GitHub Pages` 工作流，点击 `Run workflow`
+
+4. **访问网站**
+   - 部署完成后，访问：`https://你的用户名.github.io/Astwea_SelfWeb/`
+   - 首次部署可能需要几分钟，后续更新会自动部署
+
+#### 方法二：使用 gh-pages 手动部署
+
+1. **构建项目**
+   ```bash
+   npm run build
+   ```
+
+2. **部署到 GitHub Pages**
+   ```bash
+   npm run deploy
+   ```
+
+   这会自动将 `dist` 目录的内容推送到 `gh-pages` 分支。
+
+3. **配置 GitHub Pages**
+   - 进入 GitHub 仓库的 `Settings` → `Pages`
+   - 在 `Source` 部分选择 `Deploy from a branch`
+   - 选择 `gh-pages` 分支和 `/ (root)` 目录
+   - 保存设置
+
+#### 注意事项
+
+- **仓库名称**：如果仓库名称不是 `Astwea_SelfWeb`，需要修改 `vite.config.js` 中的 `base` 配置
+- **路由问题**：已配置 `404.html` 处理 SPA 路由，确保所有路由都能正常访问
+- **自定义域名**：如需使用自定义域名，在 `Settings` → `Pages` → `Custom domain` 中配置
+
+### 其他部署方式
 
 **使用 Vercel（最简单）**：
 1. 将代码推送到 GitHub
@@ -159,9 +169,9 @@ npm run preview
 ### 详细部署指南
 
 查看 [部署指南.md](./部署指南.md) 了解完整的部署方案，包括：
-- Vercel 部署（推荐）
+- Vercel 部署
 - Netlify 部署
-- GitHub Pages 部署
+- GitHub Pages 部署（已配置）
 - 云服务器部署
 - 其他托管服务
 
@@ -173,12 +183,24 @@ npm run build
 
 构建后的文件在 `dist` 目录，可以直接部署到任何静态网站托管服务。
 
-## 联系方式
+## 相关链接
 
-- 邮箱：senlin733@gmail.com
-- 电话：13808136972
+- 在线演示：https://astwea.github.io/Astwea_SelfWeb/
 - GitHub：https://github.com/Astwea
 - LinkedIn：https://www.linkedin.com/in/linsen733
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 开发
+
+这是一个开源项目，你可以：
+1. Fork 本项目
+2. 创建你的特性分支
+3. 提交你的更改
+4. 推送到分支
+5. 创建 Pull Request
 
 ## 许可证
 

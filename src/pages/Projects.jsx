@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath } from '../utils/pathHelper'
 import './Projects.css'
 
 const Projects = () => {
@@ -31,21 +32,21 @@ const Projects = () => {
       ],
       images: [
         {
-          src: '/images/project1-before.jpg.jpg', // 实际文件名
+          src: getAssetPath('/images/project1-before.jpg.jpg'), // 实际文件名
           alt: '改装前扫地机器人',
           label: '改装前：碰撞式导航',
           clickable: false,
         },
         {
-          src: '/images/project1-pcb.png', // 实际文件名是.png
+          src: getAssetPath('/images/project1-pcb.png'), // 实际文件名是.png
           alt: 'PCB 设计',
           label: 'PCB 设计',
           clickable: true,
         },
       ],
       video: {
-        src: '/videos/project1-sim.mp4',
-        thumbnail: '/images/project1-video-thumb.png', // 实际文件名是.png
+        src: getAssetPath('/videos/project1-sim.mp4'),
+        thumbnail: getAssetPath('/images/project1-video-thumb.png'), // 实际文件名是.png
         alt: 'Isaac Sim 仿真视频',
       },
       result:
@@ -75,21 +76,21 @@ const Projects = () => {
       ],
       images: [
         {
-          src: '/images/project2-vision.jpg',
+          src: getAssetPath('/images/project2-vision.jpg'),
           alt: '视觉识别界面',
           label: '目标计数：3 | 坐标：X=1.2,Y=0.8',
           clickable: true,
         },
         {
-          src: '/images/project2-team.jpg',
+          src: getAssetPath('/images/project2-team.jpg'),
           alt: '竞赛现场合影',
           label: '全国智能车竞赛',
           clickable: false,
         },
       ],
       video: {
-        src: '/videos/project2-car.mp4',
-        thumbnail: '/images/project2-car.png',
+        src: getAssetPath('/videos/project2-car.mp4'),
+        thumbnail: getAssetPath('/images/project2-car.png'),
         alt: '智能车实物视频',
       },
       result:
@@ -119,19 +120,19 @@ const Projects = () => {
       ],
       images: [
         {
-          src: '/images/project3-board.png', // 实际文件名是.png
+          src: getAssetPath('/images/project3-board.png'), // 实际文件名是.png
           alt: '飞控主板',
           label: '飞控主板实物',
           clickable: true,
         },
         {
-          src: '/images/project3-code.png', // 实际文件名是.png
+          src: getAssetPath('/images/project3-code.png'), // 实际文件名是.png
           alt: 'PID 算法代码',
           label: 'PID 算法代码',
           clickable: false,
         },
         {
-          src: '/images/project3-wiring.jpg',
+          src: getAssetPath('/images/project3-wiring.jpg'),
           alt: '传感器接线示意图',
           label: '传感器接线示意图',
           clickable: false,
@@ -273,7 +274,7 @@ const Projects = () => {
                           onClick={() => handleVideoPlay(project.id)}
                         >
                           <img
-                            src={project.video.thumbnail || '/images/video-placeholder.jpg'}
+                            src={project.video.thumbnail || getAssetPath('/images/video-placeholder.jpg')}
                             alt={project.video.alt}
                             onError={handleImageError}
                           />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath } from '../utils/pathHelper'
 import './About.css'
 
 const About = () => {
@@ -7,32 +8,32 @@ const About = () => {
 
   const lifeImages = [
     {
-      src: '/images/life-chat.jpg',
+      src: getAssetPath('/images/life-chat.jpg'),
       alt: '内网穿透聊天软件',
       desc: '自主开发内网穿透聊天软件，实现跨网络通信',
     },
     {
-      src: '/images/life-cycling.jpg',
+      src: getAssetPath('/images/life-cycling.jpg'),
       alt: '运动爱好',
       desc: '骑行解压，沿途风景给技术灵感',
     },
     {
-      src: '/images/life-event.jpg',
+      src: getAssetPath('/images/life-event.jpg'),
       alt: '行业交流',
       desc: '参加行业沙龙，和同行交流前沿方向',
     },
     {
-      src: '/images/life-app.jpg',
+      src: getAssetPath('/images/life-app.jpg'),
       alt: 'EmojiDaily APP',
       desc: 'EmojiDaily - 日记类APP（鸿蒙与安卓端）',
     },
     {
-      src: '/images/life-fan.jpg',
+      src: getAssetPath('/images/life-fan.jpg'),
       alt: '3D打印涡扇风扇',
       desc: '3D建模DIY - 自主设计并打印涡扇风扇',
     },
     {
-      src: '/images/life-ukulele.jpg',
+      src: getAssetPath('/images/life-ukulele.jpg'),
       alt: '尤克里里',
       desc: '音乐爱好 - 尤克里里演奏',
     },
@@ -95,7 +96,7 @@ const About = () => {
             </div>
             <div className="journey-background">
                   <img
-                    src="/images/lab-scene.jpg"
+                    src={getAssetPath('/images/lab-scene.jpg')}
                     alt="实验室工作场景"
                     onError={handleImageError}
                   />

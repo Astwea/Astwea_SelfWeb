@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { handleImageError as handleImageErrorHelper, createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath, getPdfPath } from '../utils/pathHelper'
 import './Home.css'
 
 const Home = () => {
   const handleDownloadResume = () => {
     const link = document.createElement('a')
-    link.href = '/林森-机器人开发-简历.pdf'
+    link.href = getPdfPath('林森-机器人开发-简历.pdf')
     link.download = '林森-机器人开发-简历.pdf'
     document.body.appendChild(link)
     link.click()
@@ -27,7 +28,7 @@ const Home = () => {
           <div className="banner-left">
             <div className="profile-image-wrapper">
               <img
-                src="/images/profile.jpg"
+                src={getAssetPath('/images/profile.jpg')}
                 alt="林森个人形象照"
                 className="profile-image"
                 onError={(e) => {
@@ -59,7 +60,7 @@ const Home = () => {
           <div className="skill-card">
             <div className="skill-icon">
               <img
-                src="/images/ros2-icon.png"
+                src={getAssetPath('/images/ros2-icon.png')}
                 alt="ROS2"
                 onError={(e) => {
                   const placeholder = e.target.nextSibling
@@ -84,7 +85,7 @@ const Home = () => {
           <div className="skill-card">
             <div className="skill-icon">
               <img
-                src="/images/stm32-icon.png"
+                src={getAssetPath('/images/stm32-icon.png')}
                 alt="STM32"
                 onError={(e) => {
                   const placeholder = e.target.nextSibling
@@ -109,7 +110,7 @@ const Home = () => {
           <div className="skill-card">
             <div className="skill-icon">
               <img
-                src="/images/isaac-icon.png"
+                src={getAssetPath('/images/isaac-icon.png')}
                 alt="强化学习"
                 onError={(e) => {
                   const placeholder = e.target.nextSibling
@@ -134,7 +135,7 @@ const Home = () => {
           <div className="skill-card">
             <div className="skill-icon">
               <img
-                src="/images/skill-opencv.png"
+                src={getAssetPath('/images/skill-opencv.png')}
                 alt="计算机视觉"
                 onError={(e) => {
                   const placeholder = e.target.nextSibling

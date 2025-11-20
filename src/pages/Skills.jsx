@@ -1,5 +1,6 @@
 import React from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath } from '../utils/pathHelper'
 import './Skills.css'
 
 const Skills = () => {
@@ -7,7 +8,7 @@ const Skills = () => {
     {
       id: 1,
       title: '机器人开发',
-      icon: '/images/skill-ros2.png',
+      icon: getAssetPath('/images/skill-ros2.png'),
       skills: [
         { name: 'ROS2 架构', level: 90 },
         { name: 'SLAM 建图', level: 85 },
@@ -18,7 +19,7 @@ const Skills = () => {
     {
       id: 2,
       title: '嵌入式与实时控制',
-      icon: '/images/image.png',
+      icon: getAssetPath('/images/image.png'),
       skills: [
         { name: 'STM32 开发', level: 90 },
         { name: 'FreeRTOS', level: 85 },
@@ -29,7 +30,7 @@ const Skills = () => {
     {
       id: 3,
       title: '计算机视觉与传感器融合',
-      icon: '/images/skill-opencv.png',
+      icon: getAssetPath('/images/skill-opencv.png'),
       skills: [
         { name: '相机 - 雷达校准', level: 80 },
         { name: '多传感器融合', level: 82 },
@@ -40,7 +41,7 @@ const Skills = () => {
     {
       id: 4,
       title: '其他技能',
-      icon: '/images/skill-other.png',
+      icon: getAssetPath('/images/skill-other.png'),
       skills: [
         { name: 'PCB 设计', level: 85 },
         { name: 'Git 版本控制', level: 80 },

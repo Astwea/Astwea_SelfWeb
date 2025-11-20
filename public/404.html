@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - 页面未找到</title>
+    <script>
+      // GitHub Pages SPA 路由处理
+      // 当访问不存在的路径时，重定向到 index.html
+      var path = window.location.pathname;
+      var base = '/Astwea_SelfWeb/';
+      
+      // 如果路径不是以 base 开头，添加 base
+      if (!path.startsWith(base)) {
+        path = base + path.replace(/^\//, '');
+      }
+      
+      // 重定向到 index.html，保留查询参数和哈希
+      var redirect = base + 'index.html' + window.location.search + window.location.hash;
+      window.location.replace(redirect);
+    </script>
+  </head>
+  <body>
+    <p>正在重定向...</p>
+  </body>
+</html>
+

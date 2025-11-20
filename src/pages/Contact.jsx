@@ -1,11 +1,12 @@
 import React from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath, getPdfPath } from '../utils/pathHelper'
 import './Contact.css'
 
 const Contact = () => {
   const handleDownloadResume = () => {
     const link = document.createElement('a')
-    link.href = '/林森-机器人开发-简历.pdf'
+    link.href = getPdfPath('林森-机器人开发-简历.pdf')
     link.download = '林森-机器人开发-简历.pdf'
     document.body.appendChild(link)
     link.click()
@@ -37,7 +38,7 @@ const Contact = () => {
             <h2 className="section-title">下载完整简历</h2>
             <div className="resume-preview">
               <img
-                src="/images/resume-cover.png" // 实际文件名是.png
+                src={getAssetPath('/images/resume-cover.png')} // 实际文件名是.png
                 alt="简历封面"
                 onError={handleImageError}
               />
@@ -85,7 +86,7 @@ const Contact = () => {
                   className="contact-link"
                 >
                   <img
-                    src="/images/github-icon.png"
+                    src={getAssetPath('/images/github-icon.png')}
                     alt="GitHub"
                     className="social-icon"
                     onError={(e) => {
@@ -104,7 +105,7 @@ const Contact = () => {
                   className="contact-link"
                 >
                   <img
-                    src="/images/linkedin-icon.png"
+                    src={getAssetPath('/images/linkedin-icon.png')}
                     alt="LinkedIn"
                     className="social-icon"
                     onError={(e) => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
+import { getAssetPath } from '../utils/pathHelper'
 import './Awards.css'
 
 const Awards = () => {
@@ -11,7 +12,7 @@ const Awards = () => {
       name: '腾讯开悟人工智能全球公开赛中国内地赛区第二十名',
       period: '2025',
       role: '团队核心成员',
-      image: '/images/award-tencent.jpg',
+      image: getAssetPath('/images/award-tencent.jpg'),
       alt: '腾讯开悟公开赛',
     },
     {
@@ -19,7 +20,7 @@ const Awards = () => {
       name: '中国机器人及人工智能大赛（目标射击）国家一等奖',
       period: '2024',
       role: '团队核心成员',
-      image: '/images/award-target.jpg',
+      image: getAssetPath('/images/award-target.jpg'),
       alt: '目标射击国家一等奖',
     },
     {
@@ -27,7 +28,7 @@ const Awards = () => {
       name: '中国机器人及人工智能大赛（四足仿生机器人）国家二等奖',
       period: '2024',
       role: '团队核心成员',
-      image: '/images/award-quadruped.jpg',
+      image: getAssetPath('/images/award-quadruped.jpg'),
       alt: '四足仿生国家二等奖',
     },
     {
@@ -35,7 +36,7 @@ const Awards = () => {
       name: '全国大学生智能车竞赛全国总决赛讯飞赛道国家一等奖（第二名）',
       period: '2023',
       role: '队长',
-      image: '/images/award-smartcar.jpg',
+      image: getAssetPath('/images/award-smartcar.jpg'),
       alt: '智能车竞赛一等奖',
     },
     {
@@ -43,7 +44,7 @@ const Awards = () => {
       name: '第五届人工智能算法精英大赛全国总决赛（视觉巡航）国家一等奖',
       period: '2023',
       role: '团队核心成员',
-      image: '/images/award-ai-algo.jpg',
+      image: getAssetPath('/images/award-ai-algo.jpg'),
       alt: '人工智能算法精英大赛一等奖',
     },
   ]
