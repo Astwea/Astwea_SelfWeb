@@ -11,6 +11,7 @@ const Projects = () => {
   const userInteracting = useRef({})
   const scrollTimeouts = useRef({})
   const lastScrollLeft = useRef({})
+  const isResetting = useRef({}) // 标记是否正在重置滚动位置
 
   const projects = [
     {
@@ -230,6 +231,11 @@ const Projects = () => {
         return // 用户正在交互，暂停自动滚动
       }
 
+      // 如果正在重置，跳过本次执行
+      if (isResetting.current[projectId]) {
+        return
+      }
+
       const container = scrollRefs.current[projectId]
       if (!container) return
 
@@ -239,7 +245,16 @@ const Projects = () => {
 
       // 如果已经滚动到末尾，重置到开头
       if (scrollLeft + clientWidth >= scrollWidth - 5) {
-        container.scrollTo({ left: 0, behavior: 'smooth' })
+        // 设置重置标志
+        isResetting.current[projectId] = true
+        
+        // 立即重置到开头（不使用smooth，避免动画冲突）
+        container.scrollTo({ left: 0, behavior: 'auto' })
+        
+        // 短暂延迟后清除重置标志，继续自动滚动
+        setTimeout(() => {
+          isResetting.current[projectId] = false
+        }, 100) // 给一点时间让滚动完成
       } else {
         // 每次滚动 1px，实现平滑效果
         container.scrollBy({ left: 1, behavior: 'auto' })
