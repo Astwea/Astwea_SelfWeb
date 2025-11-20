@@ -19,7 +19,7 @@ const Skills = () => {
     {
       id: 2,
       title: '嵌入式与实时控制',
-      icon: getAssetPath('/images/image.png'),
+      icon: getAssetPath('/images/skill-stm32.png'),
       skills: [
         { name: 'STM32 开发', level: 90 },
         { name: 'FreeRTOS', level: 85 },
