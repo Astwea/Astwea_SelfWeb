@@ -142,6 +142,37 @@ npm run preview
 - CSS 代码分割
 - Vite 生产构建优化
 
+## 部署到公网
+
+### 快速部署（推荐）
+
+**使用 Vercel（最简单）**：
+1. 将代码推送到 GitHub
+2. 访问 https://vercel.com 并登录
+3. 导入项目 → 选择仓库 → 自动部署
+4. 5 分钟后获得 `https://your-project.vercel.app` 网址
+
+**使用 Netlify**：
+1. 访问 https://www.netlify.com
+2. 拖拽 `dist` 文件夹到页面，或连接 GitHub 仓库自动部署
+
+### 详细部署指南
+
+查看 [部署指南.md](./部署指南.md) 了解完整的部署方案，包括：
+- Vercel 部署（推荐）
+- Netlify 部署
+- GitHub Pages 部署
+- 云服务器部署
+- 其他托管服务
+
+### 构建生产版本
+
+```bash
+npm run build
+```
+
+构建后的文件在 `dist` 目录，可以直接部署到任何静态网站托管服务。
+
 ## 联系方式
 
 - 邮箱：senlin733@gmail.com
