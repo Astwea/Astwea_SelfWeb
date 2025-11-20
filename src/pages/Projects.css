@@ -1,0 +1,359 @@
+.projects {
+  padding-top: 70px;
+  min-height: 100vh;
+  background-color: var(--light-gray);
+}
+
+/* 页面标题 */
+.page-header {
+  background-color: #ffffff;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+}
+
+/* 项目列表 */
+.projects-section {
+  padding: 4rem 2rem;
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.project-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* 顶部信息栏 */
+.project-header {
+  border-bottom: 2px solid var(--light-gray);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-name {
+  font-size: 1.5rem; /* 从1.3rem增大到1.5rem */
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.project-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem; /* 从0.9rem增大到1rem */
+  color: var(--text-gray);
+}
+
+/* 中间内容区 */
+.project-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.project-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.project-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-title {
+  font-size: 1.15rem; /* 从1rem增大到1.15rem */
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.detail-text {
+  font-size: 1.05rem; /* 从1rem增大到1.05rem */
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.tech-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tech-list li {
+  font-size: 1.05rem; /* 从1rem增大到1.05rem */
+  color: var(--text-dark);
+  line-height: 1.8;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.tech-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary-blue);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.tech-list li strong {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+/* 右侧图片和视频 */
+.project-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.project-images {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.project-image-wrapper {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--light-gray);
+}
+
+.project-image-wrapper.clickable {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.project-image-wrapper.clickable:hover {
+  transform: scale(1.02);
+}
+
+.project-image-wrapper img {
+  width: 100%;
+  height: auto;
+  min-height: 150px;
+  display: block;
+  object-fit: cover;
+  background-color: var(--light-gray);
+}
+
+.image-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.project-video {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.project-video video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-thumbnail {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-thumbnail img {
+  width: 100%;
+  height: auto;
+  opacity: 0.8;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary-dark);
+  transition: all 0.3s ease;
+}
+
+.video-thumbnail:hover .play-button {
+  background-color: white;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.video-label {
+  position: absolute;
+  bottom: 1rem;
+  color: white;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+/* 底部成果区 */
+.project-result {
+  background-color: var(--light-gray);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-blue);
+}
+
+.project-result p {
+  font-size: 1.05rem; /* 从0.95rem增大到1.05rem */
+  color: var(--primary-dark);
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 图片模态框 */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  color: white;
+  font-size: 3rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modal-close:hover {
+  transform: scale(1.2);
+}
+
+.modal-desc {
+  color: white;
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .project-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .project-card {
+    padding: 1.5rem;
+  }
+
+  .project-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal-close {
+    top: -30px;
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .project-content {
+    gap: 2rem;
+  }
+}

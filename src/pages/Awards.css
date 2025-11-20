@@ -1,0 +1,250 @@
+.awards {
+  padding-top: 70px;
+  min-height: 100vh;
+  background-color: var(--light-gray);
+}
+
+/* 页面标题 */
+.page-header {
+  background-color: #ffffff;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+}
+
+/* 奖项列表 */
+.awards-section {
+  padding: 4rem 2rem;
+}
+
+.awards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.award-card {
+  background-color: var(--medium-gray);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  transition: all 0.3s ease;
+  height: 200px;
+  cursor: pointer;
+}
+
+.award-card:hover {
+  background-color: var(--light-gray);
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.award-image-wrapper {
+  width: 220px;
+  height: 170px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.award-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background-color: var(--light-gray);
+}
+
+.award-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.award-name {
+  font-size: 1.1rem; /* 从1rem增大到1.1rem */
+  font-weight: 700;
+  color: var(--primary-dark);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.award-meta {
+  font-size: 0.95rem; /* 从0.85rem增大到0.95rem */
+  color: var(--text-gray);
+  margin: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .awards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .award-card {
+    height: auto;
+    min-height: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .award-image-wrapper {
+    width: 180px;
+    height: 140px;
+  }
+
+  .award-card:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .awards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 图片模态框样式 */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  color: white;
+  font-size: 3rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modal-close:hover {
+  transform: scale(1.2);
+}
+
+.modal-prev,
+.modal-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 3rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-prev:hover,
+.modal-next:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.modal-prev {
+  left: -60px;
+}
+
+.modal-next {
+  right: -60px;
+}
+
+.modal-desc {
+  color: white;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+/* 移动端响应式 */
+@media (max-width: 768px) {
+  .modal-prev,
+  .modal-next {
+    display: none;
+  }
+
+  .modal-close {
+    top: -30px;
+    font-size: 2rem;
+  }
+
+  .modal-desc {
+    font-size: 0.95rem;
+  }
+}

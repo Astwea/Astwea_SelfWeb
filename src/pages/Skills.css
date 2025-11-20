@@ -1,0 +1,149 @@
+.skills {
+  padding-top: 70px;
+  min-height: 100vh;
+  background-color: var(--light-gray);
+}
+
+/* 页面标题 */
+.page-header {
+  background-color: #ffffff;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+}
+
+/* 技能分类卡片 */
+.skills-section {
+  padding: 4rem 2rem;
+}
+
+.skills-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.skill-category-card {
+  background-color: var(--medium-gray);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+}
+
+.category-icon {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.category-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.5rem;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.skills-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.skill-item {
+  width: 100%;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.skill-name {
+  font-size: 1rem; /* 从0.9rem增大到1rem */
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.skill-percentage {
+  font-size: 0.95rem; /* 从0.85rem增大到0.95rem */
+  color: var(--text-gray);
+  font-weight: 600;
+}
+
+.skill-progress-wrapper {
+  width: 100%;
+  height: 8px;
+  background-color: #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skill-progress {
+  height: 100%;
+  background-color: var(--primary-blue);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.skill-item:hover .skill-progress {
+  background-color: var(--primary-dark);
+}
+
+.skill-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-category-card {
+    min-height: auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .skills-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
