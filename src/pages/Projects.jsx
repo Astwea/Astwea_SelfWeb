@@ -92,6 +92,26 @@ const Projects = () => {
         '构建 obs_alignment 配置系统，对齐仿真与实机的单位、坐标系、关节顺序与传感器语义',
         '在 ROS2 Humble 环境中完成实机部署，稳定实现 100Hz 控制频率并适配 VR 低时延交互',
       ],
+      images: [
+        {
+          src: getAssetPath('/images/freebot-sim.gif'),
+          alt: 'Freebot Control 仿真动图',
+          label: 'Isaac Sim 全身协同控制仿真',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/freebot-structure.png'),
+          alt: 'Freebot Control 机器人结构示意图',
+          label: '移动操作机器人结构与任务定义',
+          clickable: true,
+        },
+        {
+          src: getAssetPath('/images/freebot-workflow.png'),
+          alt: 'Freebot Control 系统流程图',
+          label: '遥操作到全身控制的系统工作流',
+          clickable: true,
+        },
+      ],
       result:
         '项目成果：实现 11 自由度移动操作机器人的全身协同控制，最终任务成功率达到 95%；相比无课程学习方案，收敛所需迭代次数降低近 50%；推理延迟由 10-15ms 优化至 5-8ms，依赖库体积由约 500MB 降至约 40MB，并在 ROS2 Humble 环境下稳定运行 100Hz 实时控制闭环。',
     },
