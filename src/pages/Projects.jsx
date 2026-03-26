@@ -1,7 +1,61 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createImageErrorHandler } from '../utils/imageHelper'
 import { getAssetPath } from '../utils/pathHelper'
 import './Projects.css'
+
+const techKeywords = [
+  'ONNX Runtime',
+  'Cross-Attention PPO',
+  'Isaac Lab',
+  'Isaac Sim',
+  'Omniverse',
+  'Cartographer',
+  'FreeRTOS',
+  'STM32F407',
+  'STM32',
+  'ROS2',
+  'OpenCV',
+  'YOLO',
+  'RSL-RL',
+  'LibTorch',
+  'Sim2Real',
+  'Domain Randomization',
+  'Soft-gating',
+  'Curriculum Learning',
+  '互补滤波',
+  '逆运动学',
+  '特征匹配',
+  '激光雷达',
+  '单目相机',
+  'SLAM',
+  'PPO',
+  'PID',
+  'TEB',
+  'CPG',
+  'GPS',
+  'TOF',
+  'IMU',
+  'I2C',
+  'SPI',
+  'UART',
+  'PWM',
+  'PCB',
+  'Wi-Fi',
+  '蓝牙',
+  'ROS',
+]
+
+const formatTechText = (text) => {
+  const sortedKeywords = [...techKeywords].sort((a, b) => b.length - a.length)
+  let formattedText = text
+
+  sortedKeywords.forEach((keyword) => {
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    formattedText = formattedText.replace(new RegExp(`(${escaped})`, 'gi'), '<strong>$1</strong>')
+  })
+
+  return formattedText
+}
 
 const Projects = () => {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -11,9 +65,102 @@ const Projects = () => {
   const userInteracting = useRef({})
   const scrollTimeouts = useRef({})
   const lastScrollLeft = useRef({})
-  const isResetting = useRef({}) // 标记是否正在重置滚动位置
+  const isResetting = useRef({})
 
   const projects = [
+    {
+      id: 'freebot-control',
+      featured: true,
+      name: 'Freebot Control',
+      subtitle: '移动操作机器人全身协同控制系统',
+      period: '重点项目',
+      role: '端到端强化学习控制 / Sim2Real / ROS2 实机部署',
+      summary:
+        'Freebot Control 是一个基于 Isaac Lab 构建的高性能端到端强化学习控制项目，面向 11 自由度移动操作机器人，实现底盘平衡、速度跟踪与双臂末端精确追踪的闭环协同控制，并完成从仿真到实机的高效迁移。',
+      capabilities: [
+        '在复杂动态环境中同时完成底盘稳定、线速度/角速度跟踪与双臂末端目标追踪。',
+        '使用单帧推理策略网络，无需维护 hidden state，降低实机部署复杂度。',
+        '通过 ROS2 Humble + ONNX Runtime 部署链路，在实机侧稳定运行 100Hz 控制闭环。',
+      ],
+      highlightStats: [
+        { value: '11 DoF', label: '全身控制维度' },
+        { value: '108-dim', label: '高维观测空间' },
+        { value: '100Hz', label: '实机控制频率' },
+        { value: '95%', label: '最终任务成功率' },
+      ],
+      architecture: [
+        { label: '物理引擎 / 仿真', value: 'NVIDIA Omniverse, Isaac Sim, Isaac Lab' },
+        { label: '强化学习框架', value: 'PyTorch, RSL-RL' },
+        { label: '核心算法', value: 'Cross-Attention PPO' },
+        { label: '机器人系统', value: 'ROS2 Humble（C++）' },
+        { label: '推理引擎', value: 'ONNX Runtime' },
+        { label: '硬件接口', value: 'IMU、1502D 轮式电机、43 系列关节电机、VR 遥操作输入' },
+      ],
+      deepDives: [
+        {
+          title: '1. Cross-Attention PPO 策略网络',
+          description:
+            '相较传统 RNN/LSTM 架构，项目采用 5-Token 编码的 Cross-Attention PPO，对 IMU、关节空间与目标命令等多模态输入建立动态关联。',
+          bullets: [
+            '避免长序列训练中的梯度稳定性问题，在低速精细作业场景下表现出更快收敛。',
+            '推理阶段按帧独立计算，不依赖隐状态缓存，简化部署状态管理与故障恢复。',
+            '在移动操作场景中更适合融合姿态、速度、关节与遥操作命令的异构特征。',
+          ],
+        },
+        {
+          title: '2. 108 维观测 / 11 维动作建模',
+          description:
+            '系统围绕移动操作任务构建了高维 MDP：观测空间覆盖 IMU 姿态与加速度、底盘线速度/角速度、机械臂关节与末端状态、重心 CoM 位置及遥操作特征；动作空间直接控制 2 个驱动轮速度和 9 个机械臂/腰部关节位置。',
+          bullets: [
+            '观测设计兼顾底盘稳定性、上身操作状态和用户意图表达。',
+            '动作定义直接贴近实机接口，减少仿真策略到执行层之间的额外映射成本。',
+          ],
+        },
+        {
+          title: '3. 多任务平衡与 Soft-gating 奖励机制',
+          description:
+            '移动底盘平衡与机械臂操作本质上存在竞争关系。项目通过 Soft-gating 对末端追踪奖励进行动态抑制，而非简单硬切断，使策略能在优先保障物理稳定性的同时继续学习操作行为。',
+          bullets: [
+            '当底盘速度误差较大时，末端追踪奖励被衰减而不是归零，保留学习信号。',
+            '直立奖励随运动速度动态调节，允许机器人在加速阶段产生合理倾角，换取更高运动性能。',
+            '奖励设计重点解决“平衡优先”和“任务持续学习”之间的冲突。',
+          ],
+        },
+        {
+          title: '4. 五阶段课程学习',
+          description:
+            '训练流程采用从静态平衡到全身协调遥操作的五阶段课程学习，逐步引入机械臂扰动、主动补偿与高速运动条件。',
+          bullets: [
+            '训练阶段由简入繁，显著降低早期探索难度。',
+            '最终任务成功率达到 95%，相比无课程学习方案，收敛迭代次数降低近 50%。',
+            '课程设计直接服务于 Sim2Real，确保后期阶段更接近真实控制需求。',
+          ],
+        },
+      ],
+      metrics: [
+        { name: '推理延迟', baseline: '10-15 ms', optimized: '5-8 ms', improvement: '40% ↓' },
+        { name: '依赖库大小', baseline: '~500 MB', optimized: '~40 MB', improvement: '92% ↓' },
+        { name: '内存占用', baseline: '~800 MB', optimized: '~400 MB', improvement: '50% ↓' },
+        { name: '系统启动时间', baseline: '~2 s', optimized: '~0.5 s', improvement: '75% ↓' },
+      ],
+      deploymentNotes: [
+        '主导从 LibTorch 到 ONNX Runtime 的生产级迁移，显著降低部署体积与推理开销。',
+        '通过 obs_alignment 配置系统统一仿真与实机的单位、坐标系与关节顺序，保证观测严格对齐。',
+        '在 ROS2 Humble 环境中实现稳定 100Hz 控制频率，满足 VR 遥操作的低时延交互需求。',
+      ],
+      nextSteps: [
+        '加入坡道、阶梯与动态障碍物场景，提升环境泛化能力。',
+        '引入 Domain Randomization，进一步增强 Sim2Real 鲁棒性。',
+        '集成深度相机，支持基于视觉感知的末端闭环抓取。',
+      ],
+      projectStats: [
+        'Python 代码约 15,000 行',
+        'C++ 代码约 600 行',
+        '25+ 份核心技术文档',
+      ],
+      result:
+        '项目结果：在单一策略中实现底盘平衡、速度跟踪和双臂末端追踪的全身协同控制，完成从强化学习训练到 ROS2 实机部署的完整闭环，并将部署性能优化到可支撑稳定 100Hz 的实时控制。',
+    },
     {
       id: 1,
       name: '智能规划控制扫地机器人',
@@ -38,45 +185,45 @@ const Projects = () => {
       ],
       images: [
         {
-          src: getAssetPath('/images/project1-before.jpg.jpg'), // 实际文件名
+          src: getAssetPath('/images/project1-before.jpg.jpg'),
           alt: '改装前扫地机器人',
           label: '改装前：碰撞式导航',
           clickable: false,
         },
         {
-          src: getAssetPath('/images/project1-real1.jpg'), // 实际文件名是.png
+          src: getAssetPath('/images/project1-real1.jpg'),
           alt: '改装后扫地机器人',
-          label: '改装后：雷达导航',
+          label: '改装后：硬件系统集成',
           clickable: true,
         },
         {
-          src: getAssetPath('/images/project1-real2.png'), // 实际文件名是.png
+          src: getAssetPath('/images/project1-real2.jpg'),
           alt: '改装后扫地机器人',
-          label: '改装后：雷达导航',
+          label: '改装后：导航硬件实物',
           clickable: true,
         },
         {
-          src: getAssetPath('/images/project1-sim1.jpg'), // 实际文件名是.png
-          alt: 'IsaacLab训练',
-          label: 'IsaacLab训练',
+          src: getAssetPath('/images/project1-sim1.png'),
+          alt: 'Isaac Lab 训练场景',
+          label: 'Isaac Lab 训练场景',
           clickable: true,
         },
         {
-          src: getAssetPath('/images/project1-sim2.png'), // 实际文件名是.png
-          alt: 'IsaacSim仿真',
-          label: 'IsaacSim 仿真',
+          src: getAssetPath('/images/project1-sim2.png'),
+          alt: '建图与导航界面',
+          label: 'ROS2 导航与建图验证',
           clickable: true,
         },
         {
-          src: getAssetPath('/images/project1-sim3.jpg'), // 实际文件名是.png
-          alt: 'IsaacSim仿真',
-          label: 'IsaacSim 仿真',
+          src: getAssetPath('/images/project1-sim3.jpg'),
+          alt: 'Isaac Sim 仿真',
+          label: 'Isaac Sim 轨迹跟踪仿真',
           clickable: true,
         },
       ],
       video: {
         src: getAssetPath('/videos/project1-sim.mp4'),
-        thumbnail: getAssetPath('/images/project1-video-thumb.png'), // 实际文件名是.png
+        thumbnail: getAssetPath('/images/project1-video-thumb.png'),
         alt: 'Isaac Sim 仿真视频',
       },
       result:
@@ -108,7 +255,7 @@ const Projects = () => {
         {
           src: getAssetPath('/images/project2-vision.jpg'),
           alt: '视觉识别界面',
-          label: '目标计数：3 | 坐标：X=1.2,Y=0.8',
+          label: '目标计数：3 | 坐标：X=1.2, Y=0.8',
           clickable: true,
         },
         {
@@ -162,13 +309,13 @@ const Projects = () => {
       ],
       images: [
         {
-          src: getAssetPath('/images/project3-board.png'), // 实际文件名是.png
+          src: getAssetPath('/images/project3-board.png'),
           alt: '飞控主板',
           label: '飞控主板实物',
           clickable: true,
         },
         {
-          src: getAssetPath('/images/project3-code.png'), // 实际文件名是.png
+          src: getAssetPath('/images/project3-code.png'),
           alt: 'PID 算法代码',
           label: 'PID 算法代码',
           clickable: false,
@@ -190,11 +337,9 @@ const Projects = () => {
     },
   ]
 
-  const getPlaceholderImage = (text) => {
-    return `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23E5E7EB" width="400" height="300"/%3E%3Ctext fill="%239CA3AF" font-family="sans-serif" font-size="16" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3E${text}%3C/text%3E%3C/svg%3E`
-  }
+  const getPlaceholderImage = (text) =>
+    `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23E5E7EB" width="400" height="300"/%3E%3Ctext fill="%239CA3AF" font-family="sans-serif" font-size="16" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3E${text}%3C/text%3E%3C/svg%3E`
 
-  // 创建图片错误处理函数（自动尝试jpg/png格式）
   const handleImageError = createImageErrorHandler(getPlaceholderImage)
 
   const handleImageClick = (image) => {
@@ -211,58 +356,40 @@ const Projects = () => {
     setPlayingVideo(playingVideo === projectId ? null : projectId)
   }
 
-  // 启动自动滚动
   const startAutoScroll = (projectId) => {
     const scrollContainer = scrollRefs.current[projectId]
-    if (!scrollContainer) return
-
-    // 检查是否需要滚动（内容宽度大于容器宽度）
-    if (scrollContainer.scrollWidth <= scrollContainer.clientWidth) {
-      return // 内容不需要滚动，不启动自动滚动
+    if (!scrollContainer || scrollContainer.scrollWidth <= scrollContainer.clientWidth) {
+      return
     }
 
-    // 清除之前的定时器
     if (autoScrollIntervals.current[projectId]) {
       clearInterval(autoScrollIntervals.current[projectId])
     }
 
     autoScrollIntervals.current[projectId] = setInterval(() => {
-      if (userInteracting.current[projectId]) {
-        return // 用户正在交互，暂停自动滚动
-      }
-
-      // 如果正在重置，跳过本次执行
-      if (isResetting.current[projectId]) {
+      if (userInteracting.current[projectId] || isResetting.current[projectId]) {
         return
       }
 
       const container = scrollRefs.current[projectId]
-      if (!container) return
+      if (!container) {
+        return
+      }
 
-      const scrollWidth = container.scrollWidth
-      const clientWidth = container.clientWidth
-      const scrollLeft = container.scrollLeft
+      const { scrollWidth, clientWidth, scrollLeft } = container
 
-      // 如果已经滚动到末尾，重置到开头
       if (scrollLeft + clientWidth >= scrollWidth - 5) {
-        // 设置重置标志
         isResetting.current[projectId] = true
-        
-        // 立即重置到开头（不使用smooth，避免动画冲突）
         container.scrollTo({ left: 0, behavior: 'auto' })
-        
-        // 短暂延迟后清除重置标志，继续自动滚动
         setTimeout(() => {
           isResetting.current[projectId] = false
-        }, 100) // 给一点时间让滚动完成
+        }, 100)
       } else {
-        // 每次滚动 1px，实现平滑效果
         container.scrollBy({ left: 1, behavior: 'auto' })
       }
-    }, 50) // 每50ms滚动一次，实现平滑的慢速滚动效果
+    }, 50)
   }
 
-  // 停止自动滚动
   const stopAutoScroll = (projectId) => {
     if (autoScrollIntervals.current[projectId]) {
       clearInterval(autoScrollIntervals.current[projectId])
@@ -270,20 +397,18 @@ const Projects = () => {
     }
   }
 
-  // 处理用户交互开始
   const handleUserInteractionStart = (projectId) => {
     userInteracting.current[projectId] = true
     stopAutoScroll(projectId)
   }
 
-  // 处理用户交互结束
   const handleUserInteractionEnd = (projectId) => {
     userInteracting.current[projectId] = false
-    // 清除之前的定时器
+
     if (scrollTimeouts.current[projectId]) {
       clearTimeout(scrollTimeouts.current[projectId])
     }
-    // 延迟3秒后恢复自动滚动
+
     scrollTimeouts.current[projectId] = setTimeout(() => {
       if (!userInteracting.current[projectId]) {
         startAutoScroll(projectId)
@@ -291,15 +416,15 @@ const Projects = () => {
     }, 3000)
   }
 
-  // 处理滚动事件（检测用户手动滚动）
   const handleScroll = (projectId) => {
     const container = scrollRefs.current[projectId]
-    if (!container) return
+    if (!container) {
+      return
+    }
 
     const currentScrollLeft = container.scrollLeft
     const lastScroll = lastScrollLeft.current[projectId]
 
-    // 如果滚动位置变化较大，说明是用户手动滚动
     if (lastScroll !== undefined && Math.abs(currentScrollLeft - lastScroll) > 5) {
       handleUserInteractionStart(projectId)
       handleUserInteractionEnd(projectId)
@@ -308,22 +433,20 @@ const Projects = () => {
     lastScrollLeft.current[projectId] = currentScrollLeft
   }
 
-  // 组件挂载时启动自动滚动
   useEffect(() => {
     projects.forEach((project) => {
-      if (project.images && project.images.length > 0) {
-        // 延迟启动，确保DOM已渲染
+      if (project.images?.length) {
         setTimeout(() => {
           startAutoScroll(project.id)
         }, 500)
       }
     })
 
-    // 清理函数
     return () => {
       Object.keys(autoScrollIntervals.current).forEach((projectId) => {
         stopAutoScroll(projectId)
       })
+
       Object.keys(scrollTimeouts.current).forEach((projectId) => {
         if (scrollTimeouts.current[projectId]) {
           clearTimeout(scrollTimeouts.current[projectId])
@@ -333,163 +456,260 @@ const Projects = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <div className="projects">
-      {/* 页面标题 */}
-      <section className="page-header">
-        <div className="header-container">
-          <h1 className="page-title">项目经验</h1>
-          <p className="page-subtitle">从想法到落地，每一步都有细节</p>
+  const renderDefaultProject = (project) => (
+    <div key={project.id} className="project-card">
+      <div className="project-header">
+        <h2 className="project-name">{project.name}</h2>
+        <div className="project-meta">
+          <span className="project-period">{project.period}</span>
+          <span className="project-role">{project.role}</span>
         </div>
-      </section>
+      </div>
 
-      {/* 项目列表 */}
-      <section className="projects-section">
-        <div className="projects-container">
-          {projects.map((project) => (
-            <div key={project.id} className="project-card">
-              {/* 顶部信息栏 */}
-              <div className="project-header">
-                <h2 className="project-name">{project.name}</h2>
-                <div className="project-meta">
-                  <span className="project-period">{project.period}</span>
-                  <span className="project-role">{project.role}</span>
-                </div>
-              </div>
+      <div className="project-content">
+        <div className="project-left">
+          <div className="project-detail">
+            <h3 className="detail-title">项目背景</h3>
+            <p className="detail-text">{project.background}</p>
+          </div>
 
-              {/* 中间内容区 */}
-              <div className="project-content">
-                <div className="project-left">
-                  <div className="project-detail">
-                    <h3 className="detail-title">项目背景</h3>
-                    <p className="detail-text">{project.background}</p>
+          <div className="project-detail">
+            <h3 className="detail-title">核心技术</h3>
+            <ul className="tech-list">
+              {project.tech.map((tech, index) => (
+                <li key={index} dangerouslySetInnerHTML={{ __html: formatTechText(tech) }} />
+              ))}
+            </ul>
+          </div>
+
+          <div className="project-detail">
+            <h3 className="detail-title">我的职责</h3>
+            <ul className="tech-list">
+              {project.responsibilities.map((resp, index) => (
+                <li key={index}>{resp}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="project-right">
+          {project.images?.length > 0 && (
+            <div
+              className="project-images-scroll"
+              ref={(el) => {
+                scrollRefs.current[project.id] = el
+              }}
+              onMouseDown={() => handleUserInteractionStart(project.id)}
+              onMouseUp={() => handleUserInteractionEnd(project.id)}
+              onMouseLeave={() => handleUserInteractionEnd(project.id)}
+              onTouchStart={() => handleUserInteractionStart(project.id)}
+              onTouchEnd={() => handleUserInteractionEnd(project.id)}
+              onScroll={() => handleScroll(project.id)}
+            >
+              <div className="project-images">
+                {project.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`project-image-wrapper ${image.clickable ? 'clickable' : ''}`}
+                    onClick={() => image.clickable && handleImageClick(image)}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      onError={handleImageError}
+                      loading="lazy"
+                    />
+                    {image.label && <div className="image-label">{image.label}</div>}
                   </div>
-
-                  <div className="project-detail">
-                    <h3 className="detail-title">核心技术</h3>
-                    <ul className="tech-list">
-                      {project.tech.map((tech, index) => {
-                        // 提取技术栈关键词并加粗（按长度从长到短排序，避免短词覆盖长词）
-                        const techKeywords = [
-                          'Human-in-Loop', 'Isaac Sim', 'Cartographer', 'ESP8266', 'MPU6050',
-                          'FreeRTOS', 'STM32F407', 'STM32', 'ROS2', 'OpenCV', 'YOLO',
-                          '互补滤波', '逆运动学', '特征匹配', '激光雷达', '单目相机',
-                          'SLAM', 'PPO', 'PID', 'TEB', 'CPG', 'GPS', 'TOF', 'IMU',
-                          'I2C', 'SPI', 'UART', 'PWM', 'PCB', 'Wi-Fi', '蓝牙', 'ROS'
-                        ]
-                        let formattedTech = tech
-                        // 按长度从长到短排序，优先匹配长关键词
-                        techKeywords.sort((a, b) => b.length - a.length)
-                        techKeywords.forEach(keyword => {
-                          // 使用单词边界或括号来精确匹配
-                          const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
-                          formattedTech = formattedTech.replace(regex, '<strong>$1</strong>')
-                        })
-                        return <li key={index} dangerouslySetInnerHTML={{ __html: formattedTech }} />
-                      })}
-                    </ul>
-                  </div>
-
-                  <div className="project-detail">
-                    <h3 className="detail-title">我的职责</h3>
-                    <ul className="tech-list">
-                      {project.responsibilities.map((resp, index) => (
-                        <li key={index}>{resp}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="project-right">
-                  {/* 图片展示 - 横向滚动 */}
-                  {project.images && project.images.length > 0 && (
-                    <div
-                      className="project-images-scroll"
-                      ref={(el) => (scrollRefs.current[project.id] = el)}
-                      onMouseDown={() => handleUserInteractionStart(project.id)}
-                      onMouseUp={() => handleUserInteractionEnd(project.id)}
-                      onMouseLeave={() => handleUserInteractionEnd(project.id)}
-                      onTouchStart={() => handleUserInteractionStart(project.id)}
-                      onTouchEnd={() => handleUserInteractionEnd(project.id)}
-                      onScroll={() => handleScroll(project.id)}
-                    >
-                      <div className="project-images">
-                        {project.images.map((image, index) => (
-                          <div
-                            key={index}
-                            className={`project-image-wrapper ${
-                              image.clickable ? 'clickable' : ''
-                            }`}
-                            onClick={() => image.clickable && handleImageClick(image)}
-                          >
-                            <img
-                              src={image.src}
-                              alt={image.alt}
-                              onError={handleImageError}
-                              loading="lazy"
-                            />
-                            {image.label && <div className="image-label">{image.label}</div>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 视频展示 */}
-                  {project.video && (
-                    <div className="project-video">
-                      {playingVideo === project.id ? (
-                        <video
-                          controls
-                          autoPlay
-                          src={project.video.src}
-                          onError={(e) => {
-                            e.target.style.display = 'none'
-                            e.target.nextSibling.style.display = 'flex'
-                          }}
-                        >
-                          您的浏览器不支持视频播放
-                        </video>
-                      ) : (
-                        <div
-                          className="video-thumbnail"
-                          onClick={() => handleVideoPlay(project.id)}
-                        >
-                          <img
-                            src={project.video.thumbnail || getAssetPath('/images/video-placeholder.jpg')}
-                            alt={project.video.alt}
-                            onError={handleImageError}
-                          />
-                          <div className="play-button">▶</div>
-                          <p className="video-label">点击播放仿真视频</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* 底部成果区 */}
-              <div className="project-result">
-                <p>{project.result}</p>
+                ))}
               </div>
             </div>
+          )}
+
+          {project.video && (
+            <div className="project-video">
+              {playingVideo === project.id ? (
+                <video
+                  controls
+                  autoPlay
+                  src={project.video.src}
+                  onError={(event) => {
+                    event.target.style.display = 'none'
+                    if (event.target.nextSibling) {
+                      event.target.nextSibling.style.display = 'flex'
+                    }
+                  }}
+                >
+                  您的浏览器不支持视频播放
+                </video>
+              ) : (
+                <div className="video-thumbnail" onClick={() => handleVideoPlay(project.id)}>
+                  <img
+                    src={project.video.thumbnail || getAssetPath('/images/video-placeholder.jpg')}
+                    alt={project.video.alt}
+                    onError={handleImageError}
+                  />
+                  <div className="play-button">▶</div>
+                  <p className="video-label">点击播放演示视频</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="project-result">
+        <p>{project.result}</p>
+      </div>
+    </div>
+  )
+
+  const renderFeaturedProject = (project) => (
+    <div key={project.id} className="project-card featured-project-card">
+      <div className="featured-project-hero">
+        <div className="featured-project-copy">
+          <span className="featured-badge">Featured Project</span>
+          <h2 className="project-name featured-project-name">{project.name}</h2>
+          <p className="featured-project-subtitle">{project.subtitle}</p>
+          <div className="project-meta featured-project-meta">
+            <span className="project-period">{project.period}</span>
+            <span className="project-role">{project.role}</span>
+          </div>
+          <p className="featured-summary">{project.summary}</p>
+        </div>
+        <div className="featured-highlight-grid">
+          {project.highlightStats.map((item) => (
+            <div key={item.label} className="highlight-stat-card">
+              <div className="highlight-stat-value">{item.value}</div>
+              <div className="highlight-stat-label">{item.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="featured-panel">
+        <h3 className="detail-title">项目概览</h3>
+        <ul className="tech-list">
+          {project.capabilities.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="featured-two-column">
+        <section className="featured-panel">
+          <h3 className="detail-title">技术架构</h3>
+          <div className="architecture-grid">
+            {project.architecture.map((item) => (
+              <div key={item.label} className="architecture-item">
+                <span className="architecture-label">{item.label}</span>
+                <p className="architecture-value">{item.value}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="featured-panel">
+          <h3 className="detail-title">项目统计</h3>
+          <div className="project-stat-list">
+            {project.projectStats.map((item) => (
+              <div key={item} className="project-stat-chip">
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section className="featured-panel">
+        <h3 className="detail-title">核心技术深度解析</h3>
+        <div className="deep-dive-list">
+          {project.deepDives.map((item) => (
+            <article key={item.title} className="deep-dive-card">
+              <h4 className="deep-dive-title">{item.title}</h4>
+              <p className="deep-dive-description">{item.description}</p>
+              <ul className="tech-list compact-list">
+                {item.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* 图片放大模态框 */}
+      <div className="featured-two-column featured-bottom-grid">
+        <section className="featured-panel">
+          <h3 className="detail-title">Sim2Real 迁移与量化成果</h3>
+          <div className="metrics-table-wrapper">
+            <table className="metrics-table">
+              <thead>
+                <tr>
+                  <th>性能指标</th>
+                  <th>LibTorch</th>
+                  <th>ONNX Runtime</th>
+                  <th>提升幅度</th>
+                </tr>
+              </thead>
+              <tbody>
+                {project.metrics.map((item) => (
+                  <tr key={item.name}>
+                    <td>{item.name}</td>
+                    <td>{item.baseline}</td>
+                    <td>{item.optimized}</td>
+                    <td>{item.improvement}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <ul className="tech-list compact-list">
+            {project.deploymentNotes.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="featured-panel">
+          <h3 className="detail-title">下一步计划</h3>
+          <ul className="tech-list">
+            {project.nextSteps.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <div className="project-result featured-result">
+        <p>{project.result}</p>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="projects">
+      <section className="page-header">
+        <div className="header-container">
+          <h1 className="page-title">项目经验</h1>
+          <p className="page-subtitle">相比纸质简历，这里更完整地展示架构、算法、部署与量化结果</p>
+        </div>
+      </section>
+
+      <section className="projects-section">
+        <div className="projects-container">
+          {projects.map((project) =>
+            project.featured ? renderFeaturedProject(project) : renderDefaultProject(project)
+          )}
+        </div>
+      </section>
+
       {selectedImage && (
         <div className="image-modal" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" onClick={(event) => event.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>
               ×
             </button>
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.alt}
-              onError={handleImageError}
-            />
+            <img src={selectedImage.src} alt={selectedImage.alt} onError={handleImageError} />
             <p className="modal-desc">{selectedImage.label}</p>
           </div>
         </div>
