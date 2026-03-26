@@ -243,6 +243,21 @@
   display: block;
 }
 
+.gif-thumbnail {
+  position: relative;
+  cursor: default;
+}
+
+.gif-thumbnail.clickable {
+  cursor: pointer;
+}
+
+.gif-thumbnail img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .video-thumbnail {
   position: relative;
   cursor: pointer;

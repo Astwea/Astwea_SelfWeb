@@ -94,12 +94,6 @@ const Projects = () => {
       ],
       images: [
         {
-          src: getAssetPath('/images/freebot-sim.gif'),
-          alt: 'Freebot Control 仿真动图',
-          label: 'Isaac Sim 全身协同控制仿真',
-          clickable: true,
-        },
-        {
           src: getAssetPath('/images/freebot-structure.png'),
           alt: 'Freebot Control 机器人结构示意图',
           label: '移动操作机器人结构与任务定义',
@@ -112,6 +106,13 @@ const Projects = () => {
           clickable: true,
         },
       ],
+      video: {
+        type: 'gif',
+        src: getAssetPath('/images/freebot-sim.gif'),
+        alt: 'Freebot Control 仿真动图',
+        label: 'Isaac Sim 全身协同控制仿真',
+        clickable: true,
+      },
       result:
         '项目成果：实现 11 自由度移动操作机器人的全身协同控制，最终任务成功率达到 95%；相比无课程学习方案，收敛所需迭代次数降低近 50%；推理延迟由 10-15ms 优化至 5-8ms，依赖库体积由约 500MB 降至约 40MB，并在 ROS2 Humble 环境下稳定运行 100Hz 实时控制闭环。',
     },
@@ -500,7 +501,27 @@ const Projects = () => {
 
                       {project.video && (
                         <div className="project-video">
-                          {playingVideo === project.id ? (
+                          {project.video.type === 'gif' ? (
+                            <div
+                              className={`gif-thumbnail ${project.video.clickable ? 'clickable' : ''}`}
+                              onClick={() =>
+                                project.video.clickable &&
+                                handleImageClick({
+                                  src: project.video.src,
+                                  alt: project.video.alt,
+                                  label: project.video.label,
+                                  clickable: true,
+                                })
+                              }
+                            >
+                              <img
+                                src={project.video.src}
+                                alt={project.video.alt}
+                                onError={handleImageError}
+                              />
+                              <p className="video-label">{project.video.label || '仿真演示动图'}</p>
+                            </div>
+                          ) : playingVideo === project.id ? (
                             <video
                               controls
                               autoPlay
