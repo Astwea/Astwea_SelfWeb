@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { getPdfPath } from '../utils/pathHelper'
 import './Navbar.css'
 
 const Navbar = () => {
@@ -26,7 +27,7 @@ const Navbar = () => {
 
   const handleDownloadResume = () => {
     const link = document.createElement('a')
-    link.href = '/林森-机器人开发-简历.pdf'
+    link.href = getPdfPath('林森-机器人开发-简历.pdf')
     link.download = '林森-机器人开发-简历.pdf'
     document.body.appendChild(link)
     link.click()
