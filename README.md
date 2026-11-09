@@ -13,29 +13,29 @@
 
 ```
 ├── public/
-│   ├── images/          # 图片资源
-│   ├── videos/          # 视频资源
-│   └── *.pdf            # PDF 文件
+│   ├── images/          # 图片（x2/ 为人形机器人项目图，thumbs/ 为自动生成的缩略图）
+│   ├── videos/          # 视频
+│   └── 林森-机器人开发-简历.pdf
+├── scripts/
+│   ├── make-thumbs.py   # 生成缩略图：python3 scripts/make-thumbs.py
+│   ├── make-gif.sh      # 视频转 GIF：scripts/make-gif.sh 输入.mp4 输出.gif [开始秒] [时长] [宽度] [帧率]
+│   └── copy-404.js      # 构建后复制 404.html，支持 GitHub Pages 的单页路由
 ├── src/
-│   ├── components/      # 通用组件
-│   │   ├── Navbar.jsx   # 导航栏
-│   │   └── Navbar.css
-│   ├── pages/           # 页面组件
-│   │   ├── Home.jsx     # 首页
-│   │   ├── About.jsx    # 关于我
-│   │   ├── Projects.jsx # 项目经验
-│   │   ├── Awards.jsx   # 荣誉奖项
-│   │   ├── Skills.jsx   # 技能矩阵
-│   │   └── Contact.jsx  # 联系与简历
-│   ├── App.jsx          # 主应用组件
-│   ├── App.css
-│   ├── main.jsx         # 入口文件
-│   └── index.css        # 全局样式
-├── index.html
-├── package.json
-├── vite.config.js
-└── README.md
+│   ├── data/site.js     # ★ 全部网站内容（简介、项目、经历、技能、荣誉、生活）
+│   ├── components/      # Nav 导航、Lightbox 大图查看
+│   ├── pages/           # Home 单页首页、ProjectDetail 项目详情页
+│   ├── utils/           # 资源路径与缩略图工具
+│   ├── styles.css       # 全局样式（浅色简约风格）
+│   ├── App.jsx          # 路由与锚点滚动
+│   └── main.jsx
+└── index.html
 ```
+
+页面结构：首页为单页长滚动（简介 → 项目 → 经历 → 技能 → 荣誉 → 工作之外 → 联系），
+每个项目有独立详情页 `/projects/<slug>`。旧版的 `/about`、`/skills` 等地址会自动跳到首页对应区块。
+
+**更新内容只需要改 `src/data/site.js`**，新增图片后运行一次 `python3 scripts/make-thumbs.py`，
+详见 [如何添加图片和视频.md](./如何添加图片和视频.md)。
 
 ## 安装和运行
 
@@ -65,39 +65,13 @@ npm run build
 npm run preview
 ```
 
-## 资源文件
-
-项目所需的图片和视频资源请放置在 `public/` 目录下：
-- `public/images/` - 图片资源
-- `public/videos/` - 视频资源
-
-建议图片使用 WebP 格式以优化加载速度。
-
 ## 功能特性
 
-- ✅ 响应式设计（PC/平板/移动端适配）
-- ✅ 图片懒加载和占位符
-- ✅ 图片点击放大功能
-- ✅ 视频播放控制
-- ✅ 平滑滚动动画
-- ✅ 移动端汉堡菜单
-- ✅ PDF 简历下载
-- ✅ 社交媒体链接
-
-## 浏览器兼容性
-
-- Chrome（最新3个版本）
-- Firefox（最新3个版本）
-- Safari（最新3个版本）
-- Edge（最新3个版本）
-
-## 性能优化
-
-- 图片使用 WebP 格式（体积减少50%）
-- 图片懒加载
-- 视频点击播放（避免自动加载）
-- CSS 代码分割
-- Vite 生产构建优化
+- 响应式设计（桌面 / 平板 / 手机），移动端折叠菜单
+- 卡片与图集使用缩略图 + 懒加载，点击查看原图（支持键盘左右切换、Esc 关闭）
+- 视频点击后才加载播放
+- 项目详情页、上一个 / 下一个项目导航
+- 简历 PDF 一键下载
 
 ## 部署到公网
 
